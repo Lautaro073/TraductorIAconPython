@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traductor IA</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Traductor IA</h1>
+
+            <!-- Idioma de origen -->
+            <div class="field">
+                <label class="label">Idioma de origen:</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="sourceLanguage">
+                            <option value="es">Español</option>
+                            <option value="en">Inglés</option>
+                            <option value="pt">Portugués</option>
+                            <option value="fr">Francés</option>
+                            <option value="ja">Japonés</option>
+                            <option value="de">Alemán</option>
+                            <option value="ru">Ruso</option>
+                            <!-- Añadir más idiomas según lo necesite -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Texto a traducir -->
+            <div class="field">
+                <label class="label">Texto a traducir:</label>
+                <div class="control">
+                    <textarea class="textarea" id="sourceText" placeholder="Escribe aquí..."></textarea>
+                </div>
+            </div>
+
+            <!-- Idioma de destino -->
+            <div class="field">
+                <label class="label">Idioma de destino:</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="targetLanguage">
+                            <option value="en">Inglés</option>
+                            <option value="es">Español</option>
+                            <option value="pt">Portugués</option>
+                            <option value="fr">Francés</option>
+                            <option value="ja">Japonés</option>
+                            <option value="de">Alemán</option>
+                            <option value="ru">Ruso</option>
+                            <!-- Añadir más idiomas según lo necesite -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de traducción -->
+            <div class="field">
+                <div class="control">
+                    <button class="button is-primary" onclick="translateText()">Traducir</button>
+                </div>
+            </div>
+
+            <!-- Texto traducido -->
+            <div class="field">
+                <label class="label">Texto traducido:</label>
+                <div class="control">
+                    <textarea class="textarea" id="translatedText" readonly placeholder="Traducción aparecerá aquí..."></textarea>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function translateText() {
+            const sourceText = document.getElementById('sourceText').value;
+            const sourceLanguage = document.getElementById('sourceLanguage').value;
+            const targetLanguage = document.getElementById('targetLanguage').value;
+
+            fetch('/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    text: sourceText,
+                    source: sourceLanguage,
+                    target: targetLanguage
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('translatedText').value = data.translated;
+            });
+        }
+    </script>
+</body>
+</html>
